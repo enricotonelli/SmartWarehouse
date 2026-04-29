@@ -131,8 +131,8 @@ class BaseButtonTheme {
     return BaseButtonTheme._(
       backgroundColor: theme.primaryWhite,
       borderColor: theme.black50,
-      pressedColor: theme.black50.withOpacity(0.1),
-      disabledBackgroundColor: theme.primaryWhite.withOpacity(0.5),
+      pressedColor: theme.black50.withValues(alpha: 0.1),
+      disabledBackgroundColor: theme.primaryWhite.withValues(alpha: 0.5),
       textColor: theme.primaryBlack,
       textButtonStyle: style.f18W500.value.copyWith(fontWeight: FontWeight.w700),
     );

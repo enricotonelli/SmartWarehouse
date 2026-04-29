@@ -5,7 +5,7 @@ part 'token_model.freezed.dart';
 part 'token_model.g.dart';
 
 @freezed
-class TokenModel with _$TokenModel {
+sealed class TokenModel with _$TokenModel {
   const factory TokenModel({
     @JsonKey(name: 'email') required String email,
     @JsonKey(name: 'isRegistered') required bool isRegistered,

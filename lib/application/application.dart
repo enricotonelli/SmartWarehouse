@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:beamer/beamer.dart';
-import 'package:commons/commons.dart';
 import 'package:core/core.dart';
 import 'package:design_system/theme/themes/smartwarehouse/smart_warehouse_theme.dart';
 import 'package:flutter/material.dart';

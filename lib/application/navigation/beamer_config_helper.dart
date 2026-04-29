@@ -2,7 +2,6 @@ import 'package:beamer/beamer.dart';
 import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:login/login.dart';
 import 'package:upgrader/upgrader.dart';
 
 /// Beamer configuration helper for navigation routing.
@@ -14,7 +13,7 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
   BeamerDelegate get delegate => BeamerDelegate(
         locationBuilder: RoutesLocationBuilder(
           routes: _buildRoutes(),
-        ),
+        ).call,
         guards: [
           // TODO: Uncomment and use authentication guards as needed
           // AuthenticatedGuard().guard,

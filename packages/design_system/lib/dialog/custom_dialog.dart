@@ -30,7 +30,7 @@ class CustomDialog extends StatelessWidget {
     final theme = CustomThemeExtension.of(context);
     return showDialog(
       context: context,
-      barrierColor: theme.primaryWhite.withOpacity(0.9),
+      barrierColor: theme.primaryWhite.withValues(alpha: 0.9),
       barrierDismissible: barrierDismissible,
       builder: (context) => CustomDialog(padding: padding, child: child),
     );

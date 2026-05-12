@@ -1,4 +1,5 @@
 import 'package:bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationScaffold extends StatelessWidget {
@@ -8,52 +9,35 @@ class BottomNavigationScaffold extends StatelessWidget {
     this.appBar,
     this.alignment,
     this.scrollable = true,
-    this.appbar,
     this.showBottomNavigationBar = true,
     super.key,
   });
 
   final NavigationBarOption selectedTab;
-  final PreferredSizeWidget? appbar;
   final Widget child;
-  final bool scrollable, showBottomNavigationBar;
+  final bool scrollable;
+  final bool showBottomNavigationBar;
   final AlignmentGeometry? alignment;
   final PreferredSizeWidget? appBar;
 
   @override
   Widget build(BuildContext context) {
-    final bottomNavigationBar = BottomNavigationBarFeatureBuilder.build(context, selectedTab);
     return Scaffold(
       appBar: appBar,
-      backgroundColor: const Color(0xFFFCF7F7),
+      backgroundColor: SwColors.white,
       body: SafeArea(
-        child: Stack(
-          alignment: alignment ?? AlignmentDirectional.topStart,
-          children: [
-            scrollable
-                ? SingleChildScrollView(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 56, top: 12),
-                    physics: const ClampingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        child,
-                        if (showBottomNavigationBar)
-                          IgnorePointer(child: Opacity(opacity: 0, child: bottomNavigationBar)),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 56, top: 12),
-                    child: child,
-                  ),
-            if (showBottomNavigationBar)
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: bottomNavigationBar,
-              ),
-          ],
-        ),
+        bottom: false,
+        child: scrollable
+            ? SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                physics: const ClampingScrollPhysics(),
+                child: Align(alignment: alignment ?? AlignmentDirectional.topStart, child: child),
+              )
+            : Align(alignment: alignment ?? AlignmentDirectional.topStart, child: child),
       ),
+      bottomNavigationBar: showBottomNavigationBar
+          ? BottomNavigationBarFeatureBuilder.build(context, selectedTab)
+          : null,
     );
   }
 }

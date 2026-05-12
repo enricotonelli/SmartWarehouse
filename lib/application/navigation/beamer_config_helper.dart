@@ -2,6 +2,8 @@ import 'package:beamer/beamer.dart';
 import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_warehouse/application/navigation/guards/auth/authenticated_guard.dart';
+import 'package:smart_warehouse/application/navigation/guards/auth/not_authenticated_guard.dart';
 import 'package:upgrader/upgrader.dart';
 
 class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
@@ -11,12 +13,11 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
           routes: _buildRoutes(),
         ).call,
         guards: [
-          // TODO: Uncomment and use authentication guards as needed
-          // AuthenticatedGuard().guard,
-          // NotAuthenticatedGuard().guard,
+          AuthenticatedGuard().guard,
+          NotAuthenticatedGuard().guard,
         ],
         notFoundPage: _buildNotFoundPage('not-found'),
-        initialPath: Routes.catalog,
+        initialPath: Routes.login,
       );
 
   BeamPage _buildNotFoundPage(String route) {
@@ -35,7 +36,14 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
         return _beamerPage(
           title: 'Login',
           key: 'login',
-          child: LoginFeatureBuilder.buildPage(),
+          child: LoginFeatureBuilder.buildPage(
+            onLoginSuccess: (context, tokens) async {
+              await AuthFeatureBuilder.login(
+                token: tokens.accessToken,
+                refreshToken: tokens.refreshToken,
+              );
+            },
+          ),
         );
       },
       Routes.home: (_, __, ___) {

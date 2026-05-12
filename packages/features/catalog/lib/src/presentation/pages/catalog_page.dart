@@ -133,6 +133,12 @@ class _CatalogAppBar extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 8),
+          SwIconButton(
+            icon: Icons.logout,
+            tooltip: 'Cerrar sesión',
+            onPressed: () => AuthFeatureBuilder.logout(),
+          ),
         ],
       ),
     );

@@ -6,7 +6,7 @@ class OnUserAuthenticatedUseCase {
   static void call(BuildContext context) {
     Injector.i.resolve<NavigationHelper>().pushNamed(
           context,
-          routeName: Routes.home,
+          routeName: Routes.catalog,
           replace: true,
         );
   }

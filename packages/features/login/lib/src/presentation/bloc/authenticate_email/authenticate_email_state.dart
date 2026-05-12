@@ -14,3 +14,4 @@ sealed class AuthenticateEmailState with _$AuthenticateEmailState {
 
   const factory AuthenticateEmailState.fail(LoginFailure failure) = FailAuthenticateEmailState;
 }
+

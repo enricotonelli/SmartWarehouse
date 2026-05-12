@@ -11,7 +11,7 @@ class AuthenticatedGuard implements CustomBeamerGuard {
           return authCubit.state.maybeWhen(orElse: () => true, data: (_, __) => false);
         },
         onCheckFailed: (context, __) {
-          Injector.i.resolve<NavigationHelper>().pushNamed(context, routeName: Routes.home, replace: true);
+          Injector.i.resolve<NavigationHelper>().pushNamed(context, routeName: Routes.catalog, replace: true);
         },
       );
 }

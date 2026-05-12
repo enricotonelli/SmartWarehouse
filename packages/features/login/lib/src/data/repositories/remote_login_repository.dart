@@ -2,7 +2,10 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:commons/commons.dart';
+import 'package:commons/helpers/http/entities/http_response_error.dart';
 import 'package:dartz/dartz.dart';
+import 'package:login/src/domain/entities/auth_tokens.dart';
+import 'package:login/src/domain/entities/login_credentials.dart';
 import 'package:login/src/domain/entities/login_failure.dart';
 import 'package:login/src/domain/repositories/login_repository.dart';
 
@@ -13,23 +16,61 @@ class RemoteLoginRepository implements LoginRepository {
   Completer<void>? _loginCompleter;
 
   @override
+  Future<Either<LoginFailure, AuthTokens>> login(LoginCredentials credentials) async {
+    try {
+      final result = await httpHelper.post(
+        '/auth/login',
+        data: {
+          'email': credentials.email.toLowerCase(),
+          'password': credentials.password,
+        },
+        retryOnTokenExpired: false,
+      );
+      return result.fold(
+        (error) => Left(_mapError(error)),
+        (response) {
+          final data = response.data;
+          if (data is! Map<String, dynamic>) return const Left(UnknownLoginFailure());
+          final access = data['accessToken'] as String?;
+          if (access == null || access.isEmpty) return const Left(UnknownLoginFailure());
+          return Right(AuthTokens(
+            accessToken: access,
+            refreshToken: data['refreshToken'] as String?,
+          ));
+        },
+      );
+    } catch (e, st) {
+      log('login error', error: e, stackTrace: st);
+      return const Left(UnknownLoginFailure());
+    }
+  }
+
+  LoginFailure _mapError(HttpResponseError error) {
+    if (error.statusCode == 401) return const InvalidCredentialsFailure();
+    final type = error.errorType?.toLowerCase() ?? '';
+    if (type.contains('timeout')) return const TimeoutFailure();
+    if (error.statusCode == 999) return const NetworkFailure();
+    return UnknownLoginFailure(error.message ?? 'Ocurrió un error. Reintentá.');
+  }
+
+  @override
   Future<Option<LoginFailure>> authenticateEmail(String email) async {
     try {
       if (_loginCompleter != null) {
-        return Some(LoginFailure(message: 'Cannot send more than 1 code at a time.'));
+        return const Some(UnknownLoginFailure('Esperá a que termine el envío anterior.'));
       }
       _loginCompleter = Completer<void>();
       _loginCompleter?.future.whenComplete(() => _loginCompleter = null);
       final result = await httpHelper.post('/authenticate/email', data: {'email': email.toLowerCase()});
       await _completeAndWaitForCompleter();
       return result.fold(
-        (failure) => Some(LoginFailure(message: 'Sorry, there was an error authenticating your email.')),
-        (response) => const None(),
+        (failure) => Some(_mapError(failure)),
+        (_) => const None(),
       );
     } catch (e) {
       log('$e');
       await _completeAndWaitForCompleter();
-      return Some(LoginFailure(message: 'Sorry, there was an error authenticating your email.'));
+      return const Some(UnknownLoginFailure());
     }
   }
 

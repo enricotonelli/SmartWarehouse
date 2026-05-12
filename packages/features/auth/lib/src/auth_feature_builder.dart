@@ -16,6 +16,7 @@ class AuthFeatureBuilder {
     Injector.i.registerSingleton<AuthCubit>(cubit);
   }
 
+
   static void logout() => _resolve().reset();
 
   static AuthCubit _resolve() => Injector.i.resolve<AuthCubit>();

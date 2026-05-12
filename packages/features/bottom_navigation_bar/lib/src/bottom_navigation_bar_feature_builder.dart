@@ -12,6 +12,7 @@ class BottomNavigationBarFeatureBuilder {
         option.when(
           home: () => Beamer.of(context).beamToNamed(Routes.home),
           products: () => Beamer.of(context).beamToNamed(Routes.catalog),
+          cart: () => Beamer.of(context).beamToNamed(Routes.cart),
         );
       },
     );

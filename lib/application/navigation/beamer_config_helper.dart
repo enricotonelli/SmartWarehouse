@@ -63,8 +63,23 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
           key: 'catalog-detail-$id',
           child: CatalogFeatureBuilder.buildProductDetailPage(
             id,
-            onAddToCart: (_) {},
+            onAddToCart: CartFeatureBuilder.addToCart,
           ),
+        );
+      },
+      Routes.cart: (_, __, ___) {
+        return _beamerPage(
+          title: 'Carrito',
+          key: 'cart',
+          child: CartFeatureBuilder.buildCartPage(),
+        );
+      },
+      Routes.orderSuccessPattern: (_, state, __) {
+        final id = state.pathParameters['id'] ?? '';
+        return _beamerPage(
+          title: 'Orden creada',
+          key: 'order-success-$id',
+          child: OrdersFeatureBuilder.buildOrderSuccessPage(id),
         );
       },
     };

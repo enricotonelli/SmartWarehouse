@@ -1,11 +1,10 @@
-import 'package:design_system/navigation_bar/navigation_item.dart';
 import 'package:design_system/theme/extensions/custom_theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({required this.items, super.key});
 
-  final List<NavigationItem> items;
+  final List<Widget> items;
 
   @override
   Widget build(BuildContext context) {

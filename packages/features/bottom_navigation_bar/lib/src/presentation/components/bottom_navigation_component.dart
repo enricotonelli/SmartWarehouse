@@ -1,4 +1,5 @@
 import 'package:bottom_navigation_bar/src/domain/entities/navigation_bar_option.dart';
+import 'package:cart/cart.dart';
 import 'package:design_system/icon/custom_icon.dart';
 import 'package:design_system/navigation_bar/custom_navigation_bar.dart';
 import 'package:design_system/navigation_bar/navigation_item.dart';
@@ -18,6 +19,7 @@ class BottomNavigationComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     const home = NavigationBarOption.home();
     const products = NavigationBarOption.products();
+    const cart = NavigationBarOption.cart();
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
       child: CustomNavigationBar(
@@ -35,6 +37,15 @@ class BottomNavigationComponent extends StatelessWidget {
             onPressed: () => onItemPressed(context, products),
             title: 'Productos',
             selectedIcon: CustomIconData.buy,
+          ),
+          CartFeatureBuilder.buildBadge(
+            child: NavigationItem(
+              icon: CustomIconData.buy,
+              isActive: selectedTab == cart,
+              onPressed: () => onItemPressed(context, cart),
+              title: 'Carrito',
+              selectedIcon: CustomIconData.buy,
+            ),
           ),
         ],
       ),

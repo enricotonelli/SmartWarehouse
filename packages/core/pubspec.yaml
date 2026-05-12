@@ -19,6 +19,10 @@ dependencies:
     path: ../features/bottom_navigation_bar
   catalog:
     path: ../features/catalog
+  cart:
+    path: ../features/cart
+  orders:
+    path: ../features/orders
   token_repository:
     path: ../features/repositories/token_repository
   beamer: ^1.7.0

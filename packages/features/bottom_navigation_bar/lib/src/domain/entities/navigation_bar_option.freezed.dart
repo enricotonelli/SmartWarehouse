@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NavigationBarOption {
 
+
+
+
+
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is NavigationBarOption);
@@ -40,58 +44,64 @@ $NavigationBarOptionCopyWith(NavigationBarOption _, $Res Function(NavigationBarO
 /// Adds pattern-matching-related methods to [NavigationBarOption].
 extension NavigationBarOptionPatterns on NavigationBarOption {
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeNavigationBarOption value)?  home,TResult Function( ProductsNavigationBarOption value)?  products,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeNavigationBarOption value)?  home,TResult Function( ProductsNavigationBarOption value)?  products,TResult Function( CartNavigationBarOption value)?  cart,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
 return home(_that);case ProductsNavigationBarOption() when products != null:
-return products(_that);case _:
+return products(_that);case CartNavigationBarOption() when cart != null:
+return cart(_that);case _:
   return orElse();
 
 }
 }
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeNavigationBarOption value)  home,required TResult Function( ProductsNavigationBarOption value)  products,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeNavigationBarOption value)  home,required TResult Function( ProductsNavigationBarOption value)  products,required TResult Function( CartNavigationBarOption value)  cart,}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption():
 return home(_that);case ProductsNavigationBarOption():
-return products(_that);}
+return products(_that);case CartNavigationBarOption():
+return cart(_that);}
 }
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeNavigationBarOption value)?  home,TResult? Function( ProductsNavigationBarOption value)?  products,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeNavigationBarOption value)?  home,TResult? Function( ProductsNavigationBarOption value)?  products,TResult? Function( CartNavigationBarOption value)?  cart,}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
 return home(_that);case ProductsNavigationBarOption() when products != null:
-return products(_that);case _:
+return products(_that);case CartNavigationBarOption() when cart != null:
+return cart(_that);case _:
   return null;
 
 }
 }
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  products,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  products,TResult Function()?  cart,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
 return home();case ProductsNavigationBarOption() when products != null:
-return products();case _:
+return products();case CartNavigationBarOption() when cart != null:
+return cart();case _:
   return orElse();
 
 }
 }
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  products,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  products,required TResult Function()  cart,}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption():
 return home();case ProductsNavigationBarOption():
-return products();}
+return products();case CartNavigationBarOption():
+return cart();}
 }
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  products,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  products,TResult? Function()?  cart,}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
 return home();case ProductsNavigationBarOption() when products != null:
-return products();case _:
+return products();case CartNavigationBarOption() when cart != null:
+return cart();case _:
   return null;
 
 }
@@ -104,6 +114,11 @@ return products();case _:
 
 class HomeNavigationBarOption extends NavigationBarOption {
   const HomeNavigationBarOption(): super._();
+
+
+
+
+
 
 @override
 bool operator ==(Object other) {
@@ -123,11 +138,17 @@ String toString() {
 }
 
 
+
+
 /// @nodoc
 
 
 class ProductsNavigationBarOption extends NavigationBarOption {
   const ProductsNavigationBarOption(): super._();
+
+
+
+
 
 @override
 bool operator ==(Object other) {
@@ -145,6 +166,38 @@ String toString() {
 
 
 }
+
+
+
+
+/// @nodoc
+
+
+class CartNavigationBarOption extends NavigationBarOption {
+  const CartNavigationBarOption(): super._();
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CartNavigationBarOption);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'NavigationBarOption.cart()';
+}
+
+
+}
+
+
 
 
 // dart format on

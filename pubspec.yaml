@@ -46,6 +46,10 @@ dependencies:
     path: packages/features/bottom_navigation_bar
   catalog:
     path: packages/features/catalog
+  cart:
+    path: packages/features/cart
+  orders:
+    path: packages/features/orders
   token_repository:
     path: packages/features/repositories/token_repository
 

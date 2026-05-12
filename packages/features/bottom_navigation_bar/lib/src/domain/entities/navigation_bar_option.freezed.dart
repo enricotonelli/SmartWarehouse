@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NavigationBarOption {
 
-
-
-
-
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is NavigationBarOption);
@@ -43,121 +39,59 @@ $NavigationBarOptionCopyWith(NavigationBarOption _, $Res Function(NavigationBarO
 
 /// Adds pattern-matching-related methods to [NavigationBarOption].
 extension NavigationBarOptionPatterns on NavigationBarOption {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeNavigationBarOption value)?  home,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeNavigationBarOption value)?  home,TResult Function( ProductsNavigationBarOption value)?  products,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
-return home(_that);case _:
+return home(_that);case ProductsNavigationBarOption() when products != null:
+return products(_that);case _:
   return orElse();
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeNavigationBarOption value)  home,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeNavigationBarOption value)  home,required TResult Function( ProductsNavigationBarOption value)  products,}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption():
-return home(_that);}
+return home(_that);case ProductsNavigationBarOption():
+return products(_that);}
 }
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeNavigationBarOption value)?  home,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeNavigationBarOption value)?  home,TResult? Function( ProductsNavigationBarOption value)?  products,}){
 final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
-return home(_that);case _:
+return home(_that);case ProductsNavigationBarOption() when products != null:
+return products(_that);case _:
   return null;
 
 }
 }
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  home,TResult Function()?  products,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
-return home();case _:
+return home();case ProductsNavigationBarOption() when products != null:
+return products();case _:
   return orElse();
 
 }
 }
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  home,required TResult Function()  products,}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption():
-return home();}
+return home();case ProductsNavigationBarOption():
+return products();}
 }
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  home,TResult? Function()?  products,}) {final _that = this;
 switch (_that) {
 case HomeNavigationBarOption() when home != null:
-return home();case _:
+return home();case ProductsNavigationBarOption() when products != null:
+return products();case _:
   return null;
 
 }
@@ -170,12 +104,6 @@ return home();case _:
 
 class HomeNavigationBarOption extends NavigationBarOption {
   const HomeNavigationBarOption(): super._();
-  
-
-
-
-
-
 
 @override
 bool operator ==(Object other) {
@@ -195,6 +123,28 @@ String toString() {
 }
 
 
+/// @nodoc
+
+
+class ProductsNavigationBarOption extends NavigationBarOption {
+  const ProductsNavigationBarOption(): super._();
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductsNavigationBarOption);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'NavigationBarOption.products()';
+}
+
+
+}
 
 
 // dart format on

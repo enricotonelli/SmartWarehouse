@@ -51,5 +51,6 @@ class IocManager {
       );
 
     AuthFeatureBuilder.injectDependencies();
+    CatalogFeatureBuilder.injectDependencies();
   }
 }

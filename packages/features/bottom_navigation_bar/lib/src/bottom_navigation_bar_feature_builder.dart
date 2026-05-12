@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:bottom_navigation_bar/src/presentation/components/bottom_navigation_component.dart';
 import 'package:bottom_navigation_bar/src/presentation/components/bottom_navigation_scaffold.dart';
 import 'package:core/core.dart';
@@ -9,11 +10,8 @@ class BottomNavigationBarFeatureBuilder {
       selectedTab: selectedTab,
       onItemPressed: (context, option) {
         option.when(
-          home: () {
-            // TODO: Implement home navigation
-            // OnHomeNavigationUseCase.call(context);
-          },
-          // TODO: Add more navigation options as needed
+          home: () => Beamer.of(context).beamToNamed(Routes.home),
+          products: () => Beamer.of(context).beamToNamed(Routes.catalog),
         );
       },
     );

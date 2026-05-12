@@ -17,6 +17,8 @@ dependencies:
     path: ../features/login
   bottom_navigation_bar:
     path: ../features/bottom_navigation_bar
+  catalog:
+    path: ../features/catalog
   token_repository:
     path: ../features/repositories/token_repository
   beamer: ^1.7.0

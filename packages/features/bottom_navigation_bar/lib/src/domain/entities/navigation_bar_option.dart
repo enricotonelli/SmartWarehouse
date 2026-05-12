@@ -8,11 +8,9 @@ sealed class NavigationBarOption with _$NavigationBarOption {
 
   const factory NavigationBarOption.home() = HomeNavigationBarOption;
 
-  // TODO: Add more navigation bar options as needed
-  // Example:
-  // const factory NavigationBarOption.orders() = OrdersNavigationBarOption;
+  const factory NavigationBarOption.products() = ProductsNavigationBarOption;
 
   bool get isHome => maybeWhen(home: () => true, orElse: () => false);
 
-  // TODO: Add getters for new navigation bar options
+  bool get isProducts => maybeWhen(products: () => true, orElse: () => false);
 }

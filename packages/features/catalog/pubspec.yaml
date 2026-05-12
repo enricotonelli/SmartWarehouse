@@ -1,7 +1,6 @@
-name: bottom_navigation_bar
-description: "A new Flutter package project."
+name: catalog
+description: "Catalog feature: product browsing, search and filtering."
 version: 0.0.1
-homepage:
 publish_to: none
 
 environment:
@@ -16,16 +15,16 @@ dependencies:
     path: ../../core
   design_system:
     path: ../../design_system
+  bottom_navigation_bar:
+    path: ../bottom_navigation_bar
   beamer: ^1.7.0
   dartz: ^0.10.1
   flutter_bloc: ^9.1.1
-  freezed_annotation: ^3.1.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  build_runner: ^2.4.13
-  freezed: ^3.2.5
 
 flutter:

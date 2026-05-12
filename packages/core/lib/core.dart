@@ -2,6 +2,7 @@ library core;
 
 export 'package:auth/auth.dart';
 export 'package:bottom_navigation_bar/bottom_navigation_bar.dart';
+export 'package:catalog/catalog.dart';
 export 'package:commons/commons.dart';
 export 'package:login/login.dart';
 export 'package:token_repository/token_repository.dart';

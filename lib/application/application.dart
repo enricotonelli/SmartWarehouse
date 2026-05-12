@@ -68,9 +68,8 @@ class _SmartWarehouseAppState extends State<SmartWarehouseApp> {
   }
 
   void _onUserLoggedOut() {
-    final context = _navigatorContext;
-    if (context == null) return;
-    OnLoginNavigationUseCase.call(context);
+    // Sprint 1: catálogo mock no requiere sesión; el redirect a login se
+    // re-habilita en Sprint 2 cuando se reintroduce auth real.
   }
 
   void _onUserAuthenticated() {

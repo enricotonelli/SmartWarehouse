@@ -44,6 +44,8 @@ dependencies:
     path: packages/features/login
   bottom_navigation_bar:
     path: packages/features/bottom_navigation_bar
+  catalog:
+    path: packages/features/catalog
   token_repository:
     path: packages/features/repositories/token_repository
 

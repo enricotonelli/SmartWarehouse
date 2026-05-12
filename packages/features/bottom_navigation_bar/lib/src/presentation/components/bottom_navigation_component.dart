@@ -17,7 +17,7 @@ class BottomNavigationComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const home = NavigationBarOption.home();
-    // TODO: Add more navigation items as needed
+    const products = NavigationBarOption.products();
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
       child: CustomNavigationBar(
@@ -29,15 +29,13 @@ class BottomNavigationComponent extends StatelessWidget {
             title: 'Home',
             selectedIcon: CustomIconData.selectedHome,
           ),
-          // TODO: Add more navigation items here
-          // Example:
-          // NavigationItem(
-          //   icon: CustomIconData.orders,
-          //   isActive: selectedTab == orders,
-          //   onPressed: () => onItemPressed(context, orders),
-          //   title: 'Orders',
-          //   selectedIcon: CustomIconData.ordersFilled,
-          // ),
+          NavigationItem(
+            icon: CustomIconData.buy,
+            isActive: selectedTab == products,
+            onPressed: () => onItemPressed(context, products),
+            title: 'Productos',
+            selectedIcon: CustomIconData.buy,
+          ),
         ],
       ),
     );

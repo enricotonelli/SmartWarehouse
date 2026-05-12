@@ -4,10 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
 
-/// Beamer configuration helper for navigation routing.
-///
-/// This class sets up all routes for the SmartWarehouse application.
-/// Add your feature routes here as the app grows.
 class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
   @override
   BeamerDelegate get delegate => BeamerDelegate(
@@ -20,7 +16,7 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
           // NotAuthenticatedGuard().guard,
         ],
         notFoundPage: _buildNotFoundPage('not-found'),
-        initialPath: Routes.login,
+        initialPath: Routes.catalog,
       );
 
   BeamPage _buildNotFoundPage(String route) {
@@ -53,15 +49,24 @@ class BeamerConfigHelper implements NavigationConfigHelper<BeamerDelegate> {
           ),
         );
       },
-      // TODO: Add your feature routes here
-      // Example:
-      // Routes.orders: (_, state, __) {
-      //   return _beamerPage(
-      //     title: 'Orders',
-      //     key: 'orders',
-      //     child: OrdersFeatureBuilder.buildPage(),
-      //   );
-      // },
+      Routes.catalog: (_, __, ___) {
+        return _beamerPage(
+          title: 'Catálogo',
+          key: 'catalog',
+          child: CatalogFeatureBuilder.buildCatalogPage(),
+        );
+      },
+      Routes.catalogDetailPattern: (_, state, __) {
+        final id = state.pathParameters['id'] ?? '';
+        return _beamerPage(
+          title: 'Producto',
+          key: 'catalog-detail-$id',
+          child: CatalogFeatureBuilder.buildProductDetailPage(
+            id,
+            onAddToCart: (_) {},
+          ),
+        );
+      },
     };
   }
 

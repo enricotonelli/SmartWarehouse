@@ -10,6 +10,10 @@ sealed class AppDataSource with _$AppDataSource {
 
   const AppDataSource._();
 
+  bool get isMock => maybeWhen(mock: () => true, orElse: () => false);
+
+  bool get isRemote => maybeWhen(remote: () => true, orElse: () => false);
+
   factory AppDataSource.fromString(String value) {
     switch (value) {
       case 'mock':

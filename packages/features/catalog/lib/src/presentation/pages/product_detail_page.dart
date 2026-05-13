@@ -149,9 +149,23 @@ class _DetailViewState extends State<_DetailView> {
                         const SizedBox(height: 12),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text('\$${p.price.toStringAsFixed(2)}', style: SwText.display(size: 30)),
-                            StockBadge(stock: p.stock),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(_formatPrice(p.price), style: SwText.display(size: 30)),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerRight,
+                                child: StockBadge(stock: p.stock),
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 4),
@@ -324,7 +338,7 @@ class _Specs extends StatelessWidget {
       ('SKU', product.sku),
       ('Categoría', product.category.name),
       ('Stock', '${product.stock ?? '—'}'),
-      ('Precio unitario', '\$${product.price.toStringAsFixed(2)}'),
+      ('Precio unitario', _formatPrice(product.price)),
     ];
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -411,7 +425,7 @@ class _StickyFooter extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: SwButton(
-                label: 'Add to order · \$${(unitPrice * qty).toStringAsFixed(2)}',
+                label: 'Add to order · ${_formatPrice(unitPrice * qty)}',
                 icon: Icons.add,
                 onPressed: disabled ? null : onAdd,
               ),
@@ -421,4 +435,16 @@ class _StickyFooter extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatPrice(double value) {
+  final whole = value.truncate();
+  final str = whole.toString();
+  final buf = StringBuffer();
+  for (var i = 0; i < str.length; i++) {
+    final fromRight = str.length - i;
+    buf.write(str[i]);
+    if (fromRight > 1 && fromRight % 3 == 1) buf.write('.');
+  }
+  return '\$${buf.toString()}';
 }

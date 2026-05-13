@@ -69,12 +69,19 @@ class SwButton extends StatelessWidget {
                     Icon(icon, size: compact ? 16 : 18, color: fg),
                     const SizedBox(width: 8),
                   ],
-                  Text(
-                    label,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w600,
-                      fontSize: compact ? 14 : 16,
-                      color: fg,
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600,
+                          fontSize: compact ? 14 : 16,
+                          color: fg,
+                        ),
+                      ),
                     ),
                   ),
                 ],

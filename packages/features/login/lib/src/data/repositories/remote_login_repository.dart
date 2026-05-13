@@ -9,6 +9,10 @@ import 'package:login/src/domain/entities/login_credentials.dart';
 import 'package:login/src/domain/entities/login_failure.dart';
 import 'package:login/src/domain/repositories/login_repository.dart';
 
+/// Talks to `POST /auth/login` on the SmartWarehouse backend.
+///
+/// Response: `{ token, user: { id, name, email, role } }`. No refresh token —
+/// [AuthTokens.refreshToken] stays `null`.
 class RemoteLoginRepository implements LoginRepository {
   RemoteLoginRepository({required this.httpHelper});
 
@@ -31,12 +35,9 @@ class RemoteLoginRepository implements LoginRepository {
         (response) {
           final data = response.data;
           if (data is! Map<String, dynamic>) return const Left(UnknownLoginFailure());
-          final access = data['accessToken'] as String?;
-          if (access == null || access.isEmpty) return const Left(UnknownLoginFailure());
-          return Right(AuthTokens(
-            accessToken: access,
-            refreshToken: data['refreshToken'] as String?,
-          ));
+          final token = data['token'] as String?;
+          if (token == null || token.isEmpty) return const Left(UnknownLoginFailure());
+          return Right(AuthTokens(accessToken: token));
         },
       );
     } catch (e, st) {

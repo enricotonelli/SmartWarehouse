@@ -60,10 +60,11 @@ class CartItemTile extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          '\$${item.subtotal.toStringAsFixed(2)}',
-                          style: SwText.display(size: 16),
-                        ),
+                        if (item.subtotal != null)
+                          Text(
+                            '\$${item.subtotal!.toStringAsFixed(2)}',
+                            style: SwText.display(size: 16),
+                          ),
                         GestureDetector(
                           onTap: onRemove,
                           child: Text('Remove',

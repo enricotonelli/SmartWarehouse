@@ -5,8 +5,8 @@ class Product {
     required this.id,
     required this.sku,
     required this.name,
-    required this.price,
     required this.category,
+    this.price,
     this.imageUrl,
     this.description,
     this.stock,
@@ -15,8 +15,13 @@ class Product {
   final String id;
   final String sku;
   final String name;
-  final double price;
   final Category category;
+
+  /// Nullable: the warehouse backend doesn't carry monetary fields. When the
+  /// app is wired against mocks this is populated; against the real API it's
+  /// null and price-related UI hides itself.
+  final double? price;
+
   final String? imageUrl;
   final String? description;
   final int? stock;

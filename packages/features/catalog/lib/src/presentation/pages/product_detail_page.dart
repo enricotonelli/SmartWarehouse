@@ -148,31 +148,38 @@ class _DetailViewState extends State<_DetailView> {
                         Text(p.name, style: SwText.display(size: 22, height: 1.2)),
                         const SizedBox(height: 12),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: p.price == null
+                              ? MainAxisAlignment.start
+                              : MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Flexible(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerLeft,
-                                child: Text(_formatPrice(p.price), style: SwText.display(size: 30)),
+                            if (p.price != null)
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(_formatPrice(p.price!), style: SwText.display(size: 30)),
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 8),
+                            if (p.price != null) const SizedBox(width: 8),
                             Flexible(
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
-                                alignment: Alignment.centerRight,
+                                alignment: p.price == null
+                                    ? Alignment.centerLeft
+                                    : Alignment.centerRight,
                                 child: StockBadge(stock: p.stock),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'per unit · ex. VAT',
-                          style: SwText.body(size: 12, color: SwColors.text3),
-                        ),
+                        if (p.price != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            'per unit · ex. VAT',
+                            style: SwText.body(size: 12, color: SwColors.text3),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -338,7 +345,7 @@ class _Specs extends StatelessWidget {
       ('SKU', product.sku),
       ('Categoría', product.category.name),
       ('Stock', '${product.stock ?? '—'}'),
-      ('Precio unitario', _formatPrice(product.price)),
+      if (product.price != null) ('Precio unitario', _formatPrice(product.price!)),
     ];
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -404,13 +411,17 @@ class _StickyFooter extends StatelessWidget {
 
   final int qty;
   final int? stock;
-  final double unitPrice;
+  final double? unitPrice;
   final bool disabled;
   final ValueChanged<int> onQtyChanged;
   final VoidCallback onAdd;
 
   @override
   Widget build(BuildContext context) {
+    final price = unitPrice;
+    final label = price == null
+        ? 'Add to order'
+        : 'Add to order · ${_formatPrice(price * qty)}';
     return Container(
       decoration: const BoxDecoration(
         color: SwColors.white,
@@ -425,7 +436,7 @@ class _StickyFooter extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: SwButton(
-                label: 'Add to order · ${_formatPrice(unitPrice * qty)}',
+                label: label,
                 icon: Icons.add,
                 onPressed: disabled ? null : onAdd,
               ),

@@ -12,9 +12,9 @@ import 'package:login/src/presentation/pages/login_page.dart';
 class LoginFeatureBuilder {
   static const path = '/login';
 
-  // Sprint 2: backend de login aún no entregado (bloqueado por E1.7).
-  // Mientras tanto el mock acepta `test@test.com / Test1234`.
-  static bool useMock = true;
+  /// `true` uses [MockLoginRepository] (acepta `test@test.com / Test1234`).
+  /// `false` POSTea contra `/auth/login` en el backend real.
+  static bool useMock = false;
 
   static LoginRepository _resolveRepository() {
     return useMock

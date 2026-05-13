@@ -29,7 +29,10 @@ class IocManager {
       ..registerLazySingleton<HttpHelper>(
         () => DioHttpHelper(
           baseUrl: config.environment.when(
-            dev: () => 'https://api.smartwarehouse.dev/v1',
+            // Backend hosteado por un compañero — cambiar IP según quién lo
+            // levante. Para emulator Android local usar 10.0.2.2; para iOS
+            // simulator local usar localhost.
+            dev: () => 'http://172.16.130.199:8080',
             qa: () => 'https://api-qa.smartwarehouse.dev/v1',
             prod: () => 'https://api.smartwarehouse.dev/v1',
           ),

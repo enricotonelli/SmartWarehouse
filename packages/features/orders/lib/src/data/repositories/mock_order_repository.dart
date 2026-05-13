@@ -23,7 +23,7 @@ class MockOrderRepository implements OrderRepository {
     }
 
     final id = 'ORD-${_random.nextInt(9000) + 1000}';
-    final total = items.fold<double>(0, (sum, i) => sum + i.subtotal);
+    final total = items.fold<double>(0, (sum, i) => sum + (i.subtotal ?? 0));
     return Right(Order(
       id: id,
       items: List.unmodifiable(items),

@@ -24,11 +24,13 @@ class CreateOrderConfirmationDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('${cart.itemCount} ${cart.itemCount == 1 ? 'unidad' : 'unidades'}'),
-          const SizedBox(height: 4),
-          Text(
-            'Total: \$${cart.total.toStringAsFixed(0)}',
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
+          if (cart.total != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              'Total: \$${cart.total!.toStringAsFixed(0)}',
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+          ],
           const SizedBox(height: 12),
           const Text(
             '¿Querés crear la orden con estos items?',

@@ -9,7 +9,19 @@ class Cart {
 
   int get itemCount => items.fold(0, (sum, i) => sum + i.quantity);
 
-  double get total => items.fold(0.0, (sum, i) => sum + i.subtotal);
+  /// Sum of subtotals or `null` if any item is priceless.
+  double? get total {
+    if (items.isEmpty) return 0;
+    var sum = 0.0;
+    for (final i in items) {
+      final s = i.subtotal;
+      if (s == null) return null;
+      sum += s;
+    }
+    return sum;
+  }
+
+  bool get hasPrices => items.every((i) => i.subtotal != null);
 
   bool get isEmpty => items.isEmpty;
 

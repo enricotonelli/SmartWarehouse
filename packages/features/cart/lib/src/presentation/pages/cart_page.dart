@@ -179,9 +179,11 @@ class _CartBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subtotal = cart.total;
-    final shipping = subtotal > 50 ? 0.0 : 5.90;
-    final tax = subtotal * 0.07;
-    final total = subtotal + shipping + tax;
+    final shipping = subtotal == null ? null : (subtotal > 50 ? 0.0 : 5.90);
+    final tax = subtotal == null ? null : subtotal * 0.07;
+    final total = (subtotal == null || shipping == null || tax == null)
+        ? null
+        : subtotal + shipping + tax;
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
       child: Column(
@@ -242,29 +244,31 @@ class _CartBody extends StatelessWidget {
               ),
             ),
           ),
-          _SectionHeading('Summary'),
-          _Card(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: Column(
-                children: [
-                  _SummaryRow('Subtotal', '\$${subtotal.toStringAsFixed(2)}'),
-                  _SummaryRow('Shipping', shipping == 0 ? 'Free' : '\$${shipping.toStringAsFixed(2)}'),
-                  _SummaryRow('Tax (7%)', '\$${tax.toStringAsFixed(2)}'),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total', style: SwText.body(size: 15, weight: FontWeight.w700)),
-                        Text('\$${total.toStringAsFixed(2)}', style: SwText.display(size: 22)),
-                      ],
+          if (total != null) ...[
+            _SectionHeading('Summary'),
+            _Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Column(
+                  children: [
+                    _SummaryRow('Subtotal', '\$${subtotal!.toStringAsFixed(2)}'),
+                    _SummaryRow('Shipping', shipping == 0 ? 'Free' : '\$${shipping!.toStringAsFixed(2)}'),
+                    _SummaryRow('Tax (7%)', '\$${tax!.toStringAsFixed(2)}'),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Total', style: SwText.body(size: 15, weight: FontWeight.w700)),
+                          Text('\$${total.toStringAsFixed(2)}', style: SwText.display(size: 22)),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ],
       ),
     );
@@ -375,9 +379,14 @@ class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final subtotal = cart.total;
-    final shipping = subtotal > 50 ? 0.0 : 5.90;
-    final tax = subtotal * 0.07;
-    final total = subtotal + shipping + tax;
+    final shipping = subtotal == null ? null : (subtotal > 50 ? 0.0 : 5.90);
+    final tax = subtotal == null ? null : subtotal * 0.07;
+    final total = (subtotal == null || shipping == null || tax == null)
+        ? null
+        : subtotal + shipping + tax;
+    final label = total == null
+        ? 'Confirm order'
+        : 'Confirm order · \$${total.toStringAsFixed(2)}';
     return Container(
       decoration: const BoxDecoration(
         color: SwColors.white,
@@ -387,7 +396,7 @@ class _Footer extends StatelessWidget {
       child: Column(
         children: [
           SwButton(
-            label: 'Confirm order · \$${total.toStringAsFixed(2)}',
+            label: label,
             onPressed: onConfirm,
           ),
           const SizedBox(height: 8),

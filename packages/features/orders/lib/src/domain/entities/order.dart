@@ -5,14 +5,16 @@ class Order {
   const Order({
     required this.id,
     required this.items,
-    required this.total,
     required this.status,
     required this.createdAt,
+    this.total,
   });
 
   final String id;
   final List<OrderItem> items;
-  final double total;
   final OrderStatus status;
   final DateTime createdAt;
+
+  /// `null` when the backend doesn't track monetary totals.
+  final double? total;
 }

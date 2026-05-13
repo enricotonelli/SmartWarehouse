@@ -56,24 +56,29 @@ class ProductCard extends StatelessWidget {
               ),
               const SizedBox(height: 6),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: product.price == null
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Flexible(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        _formatPrice(product.price),
-                        style: SwText.display(size: 16),
+                  if (product.price != null)
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          _formatPrice(product.price!),
+                          style: SwText.display(size: 16),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 6),
+                  if (product.price != null) const SizedBox(width: 6),
                   Flexible(
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerRight,
+                      alignment: product.price == null
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
                       child: StockBadge(stock: product.stock),
                     ),
                   ),

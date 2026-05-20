@@ -16,41 +16,58 @@ class CatalogError extends CatalogState {
 
 class CatalogReady extends CatalogState {
   const CatalogReady({
-    required this.allProducts,
+    required this.products,
     required this.categories,
     required this.query,
     required this.selectedCategoryId,
+    required this.page,
+    required this.pageSize,
+    required this.total,
+    required this.hasNext,
+    required this.isLoadingMore,
+    required this.loadMoreError,
   });
 
-  final List<Product> allProducts;
+  final List<Product> products;
   final List<Category> categories;
   final String query;
   final String? selectedCategoryId;
+  final int page;
+  final int pageSize;
+  final int total;
+  final bool hasNext;
+  final bool isLoadingMore;
+  final String? loadMoreError;
 
-  List<Product> get visibleProducts {
-    return allProducts.where((p) {
-      final matchesQuery = p.matchesQuery(query);
-      final matchesCategory =
-          selectedCategoryId == null || p.category.id == selectedCategoryId;
-      return matchesQuery && matchesCategory;
-    }).toList(growable: false);
-  }
-
-  bool get isEmpty => visibleProducts.isEmpty;
+  bool get isEmpty => products.isEmpty;
 
   CatalogReady copyWith({
-    List<Product>? allProducts,
+    List<Product>? products,
     List<Category>? categories,
     String? query,
     Object? selectedCategoryId = _sentinel,
+    int? page,
+    int? pageSize,
+    int? total,
+    bool? hasNext,
+    bool? isLoadingMore,
+    Object? loadMoreError = _sentinel,
   }) {
     return CatalogReady(
-      allProducts: allProducts ?? this.allProducts,
+      products: products ?? this.products,
       categories: categories ?? this.categories,
       query: query ?? this.query,
       selectedCategoryId: identical(selectedCategoryId, _sentinel)
           ? this.selectedCategoryId
           : selectedCategoryId as String?,
+      page: page ?? this.page,
+      pageSize: pageSize ?? this.pageSize,
+      total: total ?? this.total,
+      hasNext: hasNext ?? this.hasNext,
+      isLoadingMore: isLoadingMore ?? this.isLoadingMore,
+      loadMoreError: identical(loadMoreError, _sentinel)
+          ? this.loadMoreError
+          : loadMoreError as String?,
     );
   }
 }

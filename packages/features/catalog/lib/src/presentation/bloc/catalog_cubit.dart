@@ -1,48 +1,125 @@
+import 'dart:async';
+
 import 'package:catalog/src/domain/entities/category.dart';
 import 'package:catalog/src/domain/repositories/catalog_repository.dart';
 import 'package:catalog/src/presentation/bloc/catalog_state.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 export 'catalog_state.dart';
 
 class CatalogCubit extends Cubit<CatalogState> {
-  CatalogCubit(this._repository) : super(const CatalogLoading());
+  CatalogCubit(this._repository) : super(const CatalogLoading()) {
+    scrollController = ScrollController()..addListener(_onScroll);
+  }
+
+  static const _pageSize = 20;
+  static const _triggerOffsetPx = 300.0;
+  static const _searchDebounce = Duration(milliseconds: 250);
 
   final CatalogRepository _repository;
+  late final ScrollController scrollController;
+  Timer? _searchDebounceTimer;
+  int _requestSeq = 0;
+
+  String _query = '';
+  String? _categoryId;
+  List<Category> _categoriesCache = const [];
 
   Future<void> load() async {
+    final seq = ++_requestSeq;
     emit(const CatalogLoading());
-    final productsResult = await _repository.getProducts();
-    final categoriesResult = await _repository.getCategories();
+
+    if (_categoriesCache.isEmpty) {
+      final categoriesResult = await _repository.getCategories();
+      categoriesResult.fold((_) {}, (c) => _categoriesCache = c);
+    }
+
+    final productsResult = await _repository.getProducts(
+      page: 1,
+      pageSize: _pageSize,
+      search: _query.isEmpty ? null : _query,
+      categoryId: _categoryId,
+    );
+    if (seq != _requestSeq) return;
 
     productsResult.fold(
       (failure) => emit(CatalogError(failure.message ?? 'Error cargando productos')),
-      (products) {
-        final categories = categoriesResult.fold<List<Category>>(
-          (_) => const [],
-          (c) => c,
-        );
-        emit(CatalogReady(
-          allProducts: products,
-          categories: categories,
-          query: '',
-          selectedCategoryId: null,
-        ));
-      },
+      (page) => emit(CatalogReady(
+        products: page.items,
+        categories: _categoriesCache,
+        query: _query,
+        selectedCategoryId: _categoryId,
+        page: page.page,
+        pageSize: page.pageSize,
+        total: page.total,
+        hasNext: page.hasNext,
+        isLoadingMore: false,
+        loadMoreError: null,
+      )),
     );
   }
 
-  void setQuery(String query) {
+  Future<void> loadMore() async {
+    final s = state;
+    if (s is! CatalogReady || !s.hasNext || s.isLoadingMore) return;
+    final seq = ++_requestSeq;
+    emit(s.copyWith(isLoadingMore: true, loadMoreError: null));
+
+    final result = await _repository.getProducts(
+      page: s.page + 1,
+      pageSize: s.pageSize,
+      search: _query.isEmpty ? null : _query,
+      categoryId: _categoryId,
+    );
+    if (seq != _requestSeq) return;
+
     final current = state;
-    if (current is CatalogReady) {
-      emit(current.copyWith(query: query));
+    if (current is! CatalogReady) return;
+
+    result.fold(
+      (failure) => emit(current.copyWith(
+        isLoadingMore: false,
+        loadMoreError: failure.message ?? 'Error cargando más productos',
+      )),
+      (page) => emit(current.copyWith(
+        products: [...current.products, ...page.items],
+        page: page.page,
+        total: page.total,
+        hasNext: page.hasNext,
+        isLoadingMore: false,
+        loadMoreError: null,
+      )),
+    );
+  }
+
+  void setQuery(String q) {
+    _query = q;
+    _searchDebounceTimer?.cancel();
+    _searchDebounceTimer = Timer(_searchDebounce, load);
+  }
+
+  void selectCategory(String? id) {
+    _categoryId = id;
+    load();
+  }
+
+  void retryLoadMore() => loadMore();
+
+  void _onScroll() {
+    final s = state;
+    if (s is! CatalogReady || !s.hasNext || s.isLoadingMore) return;
+    final pos = scrollController.position;
+    if (pos.pixels >= pos.maxScrollExtent - _triggerOffsetPx) {
+      loadMore();
     }
   }
 
-  void selectCategory(String? categoryId) {
-    final current = state;
-    if (current is CatalogReady) {
-      emit(current.copyWith(selectedCategoryId: categoryId));
-    }
+  @override
+  Future<void> close() {
+    _searchDebounceTimer?.cancel();
+    scrollController.removeListener(_onScroll);
+    scrollController.dispose();
+    return super.close();
   }
 }

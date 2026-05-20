@@ -101,6 +101,7 @@ class CatalogCubit extends Cubit<CatalogState> {
 
   void selectCategory(String? id) {
     _categoryId = id;
+    _searchDebounceTimer?.cancel();
     load();
   }
 

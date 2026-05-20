@@ -130,4 +130,47 @@ void main() {
       );
     });
   });
+
+  group('RemoteCatalogRepository.getCategories', () {
+    test('hits GET /categories and parses the categories array', () async {
+      final helper = _FakeHttpHelper(Right(_ok({
+        'categories': [
+          {'id': 'electronics', 'name': 'Electrónica'},
+          {'id': 'home', 'name': 'Hogar'},
+        ],
+      })));
+      final repo = RemoteCatalogRepository(httpHelper: helper);
+
+      final result = await repo.getCategories();
+
+      expect(helper.lastPath, '/categories');
+      result.fold(
+        (_) => fail('expected Right'),
+        (categories) {
+          expect(categories, hasLength(2));
+          expect(categories[0].id, 'electronics');
+          expect(categories[0].name, 'Electrónica');
+          expect(categories[1].id, 'home');
+        },
+      );
+    });
+
+    test('falls back to id when name is missing', () async {
+      final helper = _FakeHttpHelper(Right(_ok({
+        'categories': [
+          {'id': 'books'},
+        ],
+      })));
+      final repo = RemoteCatalogRepository(httpHelper: helper);
+
+      final result = await repo.getCategories();
+      result.fold(
+        (_) => fail('expected Right'),
+        (categories) {
+          expect(categories.single.id, 'books');
+          expect(categories.single.name, 'books');
+        },
+      );
+    });
+  });
 }

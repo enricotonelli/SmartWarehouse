@@ -10,6 +10,7 @@ import 'package:dartz/dartz.dart';
 /// Talks to the SmartWarehouse REST API:
 ///   GET /products?page=&page_size=&search=&category=
 ///   GET /products/{id}
+///   GET /categories
 class RemoteCatalogRepository implements CatalogRepository {
   RemoteCatalogRepository({required this.httpHelper});
 
@@ -70,17 +71,28 @@ class RemoteCatalogRepository implements CatalogRepository {
 
   @override
   Future<Either<CatalogFailure, List<Category>>> getCategories() async {
-    // TODO(catalog): replace with GET /categories when the endpoint ships.
-    // Until then we cap at 200 products and may miss categories beyond that.
-    final productsResult = await getProducts(page: 1, pageSize: 200);
-    return productsResult.map((productsPage) {
-      final seen = <String>{};
-      final out = <Category>[];
-      for (final p in productsPage.items) {
-        if (seen.add(p.category.id)) out.add(p.category);
-      }
-      return out;
-    });
+    try {
+      final result = await httpHelper.get('/categories');
+      return result.fold(
+        (error) => Left(CatalogFailure(error.message ?? 'Error obteniendo categorías')),
+        (response) {
+          final data = response.data;
+          if (data is! Map<String, dynamic>) {
+            return const Left(CatalogFailure('Respuesta inválida'));
+          }
+          final list = (data['categories'] as List?) ?? const [];
+          return Right(
+            list
+                .whereType<Map<String, dynamic>>()
+                .map(_parseCategory)
+                .toList(growable: false),
+          );
+        },
+      );
+    } catch (e, st) {
+      log('getCategories error', error: e, stackTrace: st);
+      return const Left(CatalogFailure('Error de red'));
+    }
   }
 
   @override
@@ -134,5 +146,11 @@ class RemoteCatalogRepository implements CatalogRepository {
         ? 'Otros'
         : slug[0].toUpperCase() + slug.substring(1).replaceAll('_', ' ');
     return Category(id: slug, name: name);
+  }
+
+  Category _parseCategory(Map<String, dynamic> json) {
+    final id = (json['id'] as String?) ?? '';
+    final name = (json['name'] as String?) ?? id;
+    return Category(id: id, name: name);
   }
 }
